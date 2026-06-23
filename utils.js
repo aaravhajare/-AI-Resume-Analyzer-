@@ -24,7 +24,7 @@ class GroqAPIManager {
     constructor(apiKey) {
         this.apiKey = apiKey;
         this.baseURL = 'https://api.groq.com/openai/v1/chat/completions';
-        this.model = 'mixtral-8x7b-32768';
+        this.model = 'openai/gpt-oss-120b';
     }
 
     async callAPI(messages, temperature = 0.7) {
@@ -344,17 +344,54 @@ const ReportGenerator = {
     },
 
     downloadAsText(analysisData) {
-        let report = '=== ResumeIQ Analysis Report ===\n\n';
-        report += `Generated: ${new Date().toLocaleString()}\n\n`;
-        report += `ATS Score: ${analysisData.atsScore}/100\n`;
-        report += `Analysis: ${analysisData.atsAnalysis}\n\n`;
-        report += `Summary: ${analysisData.summary}\n\n`;
-        report += `Strengths:\n${analysisData.strengths.map(s => `- ${s}`).join('\n')}\n\n`;
-        report += `Weaknesses:\n${analysisData.weaknesses.map(w => `- ${w}`).join('\n')}\n\n`;
-        
-        const blob = new Blob([report], { type: 'text/plain' });
-        this._downloadFile(blob, 'resume-analysis.txt');
-    },
+
+    if (!window.jspdf) {
+        alert("jsPDF not loaded");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // your existing report generation code
+
+    doc.save("ResumeIQ_Report.pdf");
+},
+
+downloadResumePDF(analysisData) {
+
+    if (!window.jspdf) {
+        alert("jsPDF not loaded");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    let y = 20;
+
+    doc.setFontSize(22);
+    doc.setFont(undefined, "bold");
+    doc.text("Professional Resume", 20, y);
+
+    y += 20;
+
+    doc.setFontSize(11);
+    doc.setFont(undefined, "normal");
+
+    const resumeText =
+        analysisData.professionalRewrite ||
+        "No rewritten resume available.";
+
+    const lines = doc.splitTextToSize(
+        resumeText,
+        170
+    );
+
+    doc.text(lines, 20, y);
+
+    doc.save("Professional_Resume.pdf");
+},
 
     _downloadFile(blob, filename) {
         const url = window.URL.createObjectURL(blob);
@@ -377,5 +414,33 @@ const Validators = {
     validateResume(text) {
         const trimmed = text.trim();
         return trimmed.length > 50; // At least 50 characters
+    }
+};
+
+const PDFUtils = {
+    async extractText(file) {
+        const arrayBuffer = await file.arrayBuffer();
+
+        const pdf = await pdfjsLib.getDocument({
+            data: arrayBuffer
+        }).promise;
+
+        let fullText = "";
+
+        for (let page = 1; page <= pdf.numPages; page++) {
+
+            const pdfPage = await pdf.getPage(page);
+
+            const textContent =
+                await pdfPage.getTextContent();
+
+            const pageText = textContent.items
+                .map(item => item.str)
+                .join(" ");
+
+            fullText += pageText + "\n\n";
+        }
+
+        return fullText;
     }
 };

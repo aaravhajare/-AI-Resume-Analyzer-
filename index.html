@@ -44,6 +44,10 @@
                 <div class="input-container">
                     <div class="resume-input">
                         <label for="resumeText">📄 Paste Your Resume:</label>
+                        <div class="pdf-upload">
+    <label for="pdfResume">📄 Upload Resume PDF:</label>
+    <input type="file" id="pdfResume" accept=".pdf">
+</div>
                         <textarea 
                             id="resumeText" 
                             placeholder="Paste your resume here... Include all sections: personal info, skills, experience, projects, education, etc."
@@ -156,9 +160,16 @@
 
                 <!-- Export Button -->
                 <div class="export-section">
-                    <button class="export-btn" id="exportBtn">📥 Download Report as PDF</button>
-                </div>
-            </section>
+
+    <button class="export-btn" id="exportBtn">
+        📊 Download Analysis Report
+    </button>
+
+    <button class="export-btn" id="resumePdfBtn">
+        📄 Download Rewritten Resume
+    </button>
+
+</div>
 
             <!-- Error Message -->
             <div class="error-message" id="errorMessage"></div>
@@ -166,7 +177,18 @@
     </div>
 
     <!-- Scripts -->
-    <script src="utils.js"></script>
-    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script src="utils.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

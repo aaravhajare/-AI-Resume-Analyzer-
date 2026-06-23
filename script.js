@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeEventListeners() {
+
+    document.getElementById('resumePdfBtn')
+    .addEventListener(
+        'click',
+        exportProfessionalResume
+    );
     // Settings Modal
     document.getElementById('settingsBtn').addEventListener('click', openSettingsModal);
     document.getElementById('closeModal').addEventListener('click', closeSettingsModal);
@@ -116,7 +122,8 @@ function updateAPIStatus(isValid) {
 
 async function analyzeResume() {
     // Validate inputs
-    const resume = document.getElementById('resumeText').value.trim();
+    const resume = document.getElementById('resumeText').value.trim();console.log('Resume Length:', resume.length);
+console.log('Resume Content:', resume);
     const jobDescription = document.getElementById('jobDescription').value.trim();
 
     if (!Validators.validateResume(resume)) {
@@ -351,3 +358,59 @@ document.addEventListener('keydown', function(e) {
         clearForm();
     }
 });
+
+
+
+
+// PDF Upload
+const pdfInput = document.getElementById('pdfResume');
+
+if (pdfInput) {
+    pdfInput.addEventListener('change', async function(e) {
+
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        try {
+
+            document.getElementById('resumeText').value =
+                'Extracting PDF text...';
+
+            const extractedText =
+                await PDFUtils.extractText(file);
+
+            console.log('Extracted Text Length:',
+                extractedText.length);
+
+            document.getElementById('resumeText').value =
+                extractedText;
+
+            hideError();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showError(
+                'Could not read PDF. Please try another PDF.'
+            );
+        }
+    });
+}
+
+function exportProfessionalResume() {
+
+    if (!currentAnalysis) {
+
+        showError(
+            'Please analyze a resume first.'
+        );
+
+        return;
+    }
+
+    ReportGenerator.downloadResumePDF(
+        currentAnalysis
+    );
+}
