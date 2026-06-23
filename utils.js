@@ -393,6 +393,144 @@ downloadResumePDF(analysisData) {
     doc.save("Professional_Resume.pdf");
 },
 
+downloadAsText(analysisData) {
+
+    if (!window.jspdf) {
+        alert("jsPDF not loaded");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const pageWidth = 180;
+    let y = 20;
+
+    function addSection(title, content) {
+
+        if (y > 260) {
+            doc.addPage();
+            y = 20;
+        }
+
+        doc.setFontSize(15);
+        doc.setFont(undefined, "bold");
+        doc.text(title, 15, y);
+
+        y += 8;
+
+        doc.setFontSize(11);
+        doc.setFont(undefined, "normal");
+
+        const lines = doc.splitTextToSize(
+            content,
+            pageWidth
+        );
+
+        doc.text(lines, 15, y);
+
+        y += lines.length * 6 + 10;
+    }
+
+    doc.setFontSize(22);
+    doc.setFont(undefined, "bold");
+    doc.text("ResumeIQ Analysis Report", 15, 20);
+
+    y = 35;
+
+    doc.setFontSize(10);
+    doc.setFont(undefined, "normal");
+
+    doc.text(
+        `Generated: ${new Date().toLocaleString()}`,
+        15,
+        y
+    );
+
+    y += 15;
+
+    addSection(
+        "ATS Score",
+        `${analysisData.atsScore}/100`
+    );
+
+    addSection(
+        "ATS Analysis",
+        analysisData.atsAnalysis || "N/A"
+    );
+
+    addSection(
+        "Resume Summary",
+        analysisData.summary || "N/A"
+    );
+
+    addSection(
+        "Strengths",
+        (analysisData.strengths || []).join("\n- ")
+    );
+
+    addSection(
+        "Weaknesses",
+        (analysisData.weaknesses || []).join("\n- ")
+    );
+
+    if (analysisData.skills) {
+
+        addSection(
+            "Technical Skills",
+            (analysisData.skills.technical || []).join(", ")
+        );
+
+        addSection(
+            "Tools & Platforms",
+            (analysisData.skills.tools || []).join(", ")
+        );
+
+        addSection(
+            "Soft Skills",
+            (analysisData.skills.soft || []).join(", ")
+        );
+    }
+
+    if (analysisData.professionalRewrite) {
+
+        addSection(
+            "Professional Resume Rewrite",
+            analysisData.professionalRewrite
+        );
+    }
+
+    if (
+        analysisData.jobMatchScore !== null &&
+        analysisData.jobMatchScore !== undefined
+    ) {
+
+        addSection(
+            "Job Match Score",
+            `${analysisData.jobMatchScore}%`
+        );
+
+        if (analysisData.jobMatchAnalysis) {
+
+            addSection(
+                "Matched Skills",
+                (analysisData.jobMatchAnalysis.matched || []).join(", ")
+            );
+
+            addSection(
+                "Missing Skills",
+                (analysisData.jobMatchAnalysis.missing || []).join(", ")
+            );
+
+            addSection(
+                "Recommendations",
+                (analysisData.jobMatchAnalysis.recommendations || []).join("\n")
+            );
+        }
+    }
+    doc.save("ResumeIQ_Report.pdf");
+},
+
     _downloadFile(blob, filename) {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
