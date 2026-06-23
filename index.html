@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeIQ - AI Resume Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🤖 ResumeIQ</h1>
+                <p>AI-Powered Resume Analyzer</p>
+            </div>
+            <button class="settings-btn" id="settingsBtn">⚙️ Settings</button>
+        </header>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <h2>API Configuration</h2>
+                <div class="settings-form">
+                    <label for="apiKey">Groq API Key:</label>
+                    <input 
+                        type="password" 
+                        id="apiKey" 
+                        placeholder="Enter your Groq API key"
+                        class="api-input"
+                    >
+                    <small>Get your free API key from <a href="https://console.groq.com" target="_blank">console.groq.com</a></small>
+                    <button class="save-btn" id="saveApiKey">Save API Key</button>
+                    <div class="api-status" id="apiStatus"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-container">
+                    <div class="resume-input">
+                        <label for="resumeText">📄 Paste Your Resume:</label>
+                        <textarea 
+                            id="resumeText" 
+                            placeholder="Paste your resume here... Include all sections: personal info, skills, experience, projects, education, etc."
+                            rows="8"
+                        ></textarea>
+                    </div>
+
+                    <div class="job-description-input">
+                        <label for="jobDescription">💼 Target Job Description (Optional):</label>
+                        <textarea 
+                            id="jobDescription" 
+                            placeholder="Paste the job description here for job matching analysis..."
+                            rows="8"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="analyze-btn" id="analyzeBtn">
+                        <span id="btnText">Analyze Resume</span>
+                        <span class="spinner" id="spinner"></span>
+                    </button>
+                    <button class="clear-btn" id="clearBtn">Clear</button>
+                </div>
+            </section>
+
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Analyzing your resume with AI...</p>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection">
+                <!-- ATS Score -->
+                <div class="result-card ats-card">
+                    <h3>📊 ATS Score</h3>
+                    <div class="ats-score-display">
+                        <div class="score-circle">
+                            <span class="score-value" id="atsScore">--</span>
+                            <span class="score-max">/100</span>
+                        </div>
+                        <div class="score-details">
+                            <p id="atsDetails">Analyzing...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resume Summary -->
+                <div class="result-card">
+                    <h3>📝 Resume Summary</h3>
+                    <p id="resumeSummary">Generating summary...</p>
+                </div>
+
+                <!-- Strengths -->
+                <div class="result-card strengths-card">
+                    <h3>✨ Strengths</h3>
+                    <ul id="strengthsList" class="list-items">
+                        <li>Analyzing...</li>
+                    </ul>
+                </div>
+
+                <!-- Weaknesses -->
+                <div class="result-card weaknesses-card">
+                    <h3>⚠️ Weaknesses</h3>
+                    <ul id="weaknessesList" class="list-items">
+                        <li>Analyzing...</li>
+                    </ul>
+                </div>
+
+                <!-- Missing Keywords -->
+                <div class="result-card">
+                    <h3>🔍 Missing Keywords</h3>
+                    <div id="missingKeywordsDiv">
+                        <p>Analyzing...</p>
+                    </div>
+                </div>
+
+                <!-- Improvement Suggestions -->
+                <div class="result-card suggestions-card">
+                    <h3>💡 Improvement Suggestions</h3>
+                    <div id="suggestionsDiv">
+                        <p>Generating suggestions...</p>
+                    </div>
+                </div>
+
+                <!-- Skill Categorization -->
+                <div class="result-card skills-card">
+                    <h3>🛠️ Skill Categorization</h3>
+                    <div id="skillsCategorization">
+                        <p>Categorizing skills...</p>
+                    </div>
+                </div>
+
+                <!-- Professional Rewrite -->
+                <div class="result-card rewrite-card">
+                    <h3>✏️ Professional Rewrite</h3>
+                    <div id="professionalRewrite">
+                        <p>Generating professional version...</p>
+                    </div>
+                </div>
+
+                <!-- Job Description Matching -->
+                <div class="result-card matching-card" id="matchingCard" style="display: none;">
+                    <h3>🎯 Job Description Matching</h3>
+                    <div id="jobMatching">
+                        <p>Analyzing match...</p>
+                    </div>
+                </div>
+
+                <!-- Export Button -->
+                <div class="export-section">
+                    <button class="export-btn" id="exportBtn">📥 Download Report as PDF</button>
+                </div>
+            </section>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage"></div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="utils.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{
+  "name": "resumeiq-ai-analyzer",
+  "version": "1.0.0",
+  "description": "ResumeIQ - AI-powered resume analyzer using Groq API",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "http-server -p 8000 -c-1",
+    "dev": "http-server -p 3000 -c-1",
+    "build": "echo 'No build needed - static files'",
+    "test": "echo 'No tests configured yet'"
+  },
+  "keywords": [
+    "resume",
+    "analyzer",
+    "ai",
+    "groq",
+    "ats",
+    "optimization",
+    "career"
+  ],
+  "author": "ResumeIQ Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aaravhajare/-AI-Resume-Analyzer-.git"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
+  },
+  "keywords-explanation": {
+    "description": "Free, open-source resume analyzer powered by Groq API",
+    "features": [
+      "ATS Score Analysis (0-100)",
+      "Resume Summary Generation",
+      "Strengths Identification",
+      "Weaknesses Analysis",
+      "Missing Keywords Detection",
+      "Improvement Suggestions",
+      "Skill Categorization",
+      "Professional Resume Rewrite",
+      "Job Description Matching",
+      "Export Reports"
+    ],
+    "tech": [
+      "HTML5",
+      "CSS3",
+      "Vanilla JavaScript",
+      "Groq API"
+    ],
+    "deployment": [
+      "GitHub Pages",
+      "Vercel",
+      "Netlify",
+      "Self-hosted"
+    ]
+  }
+}
